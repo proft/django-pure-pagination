@@ -1,6 +1,6 @@
-======================
-django-pure-pagination
-======================
+================================================
+django-pure-pagination with bootstrap 3 template
+================================================
 
 Description
 ======================
@@ -9,7 +9,7 @@ Description
     James Pacileo `@ignighted <http://twitter.com/ignighted>`_
 
 :Version:
-    0.2.0
+    0.2.1
 
 :Description:
     django-pure-pagination provides advanced pagination features and is fully compatible with existing code based on Django's core pagination module. (aka no need to rewrite code!)
@@ -41,6 +41,8 @@ Features
 
 4. Additional methods make it easier to render more advanced pagination templates.
 
+5. Bootstrap 3 template for paginator.
+
 
 Installation
 ------------
@@ -55,7 +57,7 @@ or clone and install from repository:
 
 ::
 
-    git clone git@github.com:jamespacileo/django-pure-pagination.git
+    git clone https://github.com/proft/django-pure-pagination.git
     cd django-pure-pagination
     python setup.py install
 
@@ -90,62 +92,6 @@ A few settings can be set within settings.py
 
 Usage example
 -------------
-
-Following is a simple example for **function based views**. For generic class-based views, see bellow.
-
-view file: **views.py**
-
-::
-
-    # views.py
-    from django.shortcuts import render_to_response
-
-    from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-
-
-    def index(request):
-
-        try:
-            page = request.GET.get('page', 1)
-        except PageNotAnInteger:
-            page = 1
-
-        objects = ['john', 'edward', 'josh', 'frank']
-
-        # Provide Paginator with the request object for complete querystring generation
-        p = Paginator(objects, request=request)
-        people = p.page(page)
-
-        return render_to_response('index.html', {
-            'people': people,
-        }
-
-
-template file: **index.html**
-
-::
-
-    {# index.html #}
-    {% extends 'base.html' %}
-
-    {% block content %}
-
-    {% for person in people.object_list %}
-        <div>
-            First name: {{ person }}
-        </div>
-    {% endfor %}
-
-    {# The following renders the pagination html #}
-    <div id="pagination">
-        {{ people.render }}
-    </div>
-
-    {% endblock %}
-
-
-Usage
------
 
 There a few different way you can make use of the features introduced within django-pure-pagination.
 
@@ -260,3 +206,23 @@ Note that the Django generic-based list view will include the object **page_obj*
         {% include "_pagination.html" %}
     
         {% endblock %}    
+
+*  **my_app/myobject_list.html** (with bootstrap 3 template)
+
+    ::
+    
+        {# my_app/myobject_list.html #}
+        {% extends 'base.html' %}
+    
+        {% block content %}
+    
+        {% for object in object_list %}
+            <div>
+                First name: {{ object.first_name }}
+            </div>
+        {% endfor %}
+    
+        {# The following renders the pagination html #}
+        {% include "pure_pagination/pagination_bootstrap.html" %}
+    
+        {% endblock %}
